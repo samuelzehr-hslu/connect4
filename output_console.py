@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
     oc.draw_grid()                          # you should see only the grid now
     oc.draw_token(col, row, GameToken.RED)  # now there is a red token at 3,3
-
+    Ansi.reset()
     Ansi.gotoXY(1,OutputConsole.STATUS_LINE_OFFSET+1); # one below status line
     print("""After implementing OutputConsole, you should be able to move a red 
 token up, down, left, and right through the board. Press ESC to quit.""")
@@ -80,6 +80,7 @@ token up, down, left, and right through the board. Press ESC to quit.""")
 
         Ansi.gotoXY(1,OutputConsole.STATUS_LINE_OFFSET); # move to status line
         Ansi.clear_line() # clear status line
+        Ansi.reset()
         print(f"Last key pressed: {key}, Type: {type(key)}") # output on status line
     
         oc.draw_token(col, row, GameToken.EMPTY)  # clear old token
@@ -92,9 +93,8 @@ token up, down, left, and right through the board. Press ESC to quit.""")
         if key == Keys.ENTER: row, col = 0, 0  # jump to top left position
         
         if (key == Keys.ESC):  # Abort with ESC
-            Ansi.gotoXY(1,OutputConsole.STATUS_LINE_OFFSET); # move to status line
+            Ansi.gotoXY(1,OutputConsole.STATUS_LINE_OFFSET+2); # move to status line
             Ansi.clear_line() # clear status line
             print("Aborted on use request.")
             break
-
         oc.draw_token(col, row, GameToken.RED)  # draw new token
