@@ -18,6 +18,9 @@ class PlayerConsole(PlayerBase):
         # use self._input to read keys, use self._output to draw current token position
         row, col = -1, 0 #Header
 
+        Ansi.gotoXY(1, self._output.STATUS_LINE_OFFSET)  # move cursor below the board
+        print(f"Player {self._player.name}'s turn.")
+
         while True:
             self._output.draw_token(col, row, self._player)  # draw token at current position
             Ansi.reset()
@@ -78,6 +81,7 @@ if __name__ == '__main__':
     Ansi.gotoXY(1, p._output.STATUS_LINE_OFFSET)  # move cursor below the board
 
     # print out the position for you to check if it's correct
+    Ansi.clear_line()  # clear status line
     print(f"Position selected: {pos}")
 
     row = 5  # put yellow's token in to last row
