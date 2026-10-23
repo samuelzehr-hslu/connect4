@@ -16,12 +16,36 @@ class PlayerConsole(PlayerBase):
         # YOUR CODE HERE
         # TODO: return desired column from user input (0..6) using
         # use self._input to read keys, use self._output to draw current token position
-        pass
+        row, col = -1, 0 #Header
+
+        while True:
+            self._output.draw_token(col, row, self._player)  # draw token at current position
+            Ansi.reset()
+            key = self._input.read_key()  # get key from user input
+            self._output.draw_token(col, row, GameToken.EMPTY)  # clear old token
+
+            if key == Keys.LEFT:    col = (col - 1) % 7  # move left (wrap around)
+            if key == Keys.RIGHT:   col = (col + 1) % 7  # move right (wrap around)
+
+            if key == Keys.ENTER:
+                Ansi.gotoXY(1, self._output.STATUS_LINE_OFFSET + 2)
+                return col  # return selected column
+
+            if key == Keys.ESC:
+                Ansi.reset()
+                Ansi.gotoXY(1, self._output.STATUS_LINE_OFFSET + 2)  # move cursor below status line
+                print("Aborted on user request.")     
+                break  # exit loop on ESC  
 
     def draw_board(self, board: list, state: GameState) -> None:
         # YOUR CODE HERE
         # TODO: draw grid with tokens using self._output
-        pass
+        self._output.draw_grid()
+
+        for row, line in enumerate(board):
+            for col, token in enumerate(line):
+                self._output.draw_token(col, row, token)   # x = col, y = row
+        Ansi.reset()
 
 
 if __name__ == '__main__':
@@ -51,7 +75,7 @@ if __name__ == '__main__':
 
     # first reset colors and move the cursor below the board
     Ansi.reset()
-    Ansi.gotoXY(1, 17) # what's the position right under YOUR board?
+    Ansi.gotoXY(1, p._output.STATUS_LINE_OFFSET)  # move cursor below the board
 
     # print out the position for you to check if it's correct
     print(f"Position selected: {pos}")
@@ -63,4 +87,6 @@ if __name__ == '__main__':
     # player so they can see what has changed (using console input/ output)
     # also tell the *yellow* player that it's now reds's turn
     p.draw_board(board, GameState.TURN_RED)
+
+    Ansi.gotoXY(1, p._output.STATUS_LINE_OFFSET + 1)
     # ...

@@ -33,7 +33,6 @@ class OutputConsole(OutputBase):
         # YOUR CODE HERE (replace the code below with your own code)
         Ansi.gotoXY(3 + 5*x, OutputConsole.VERTICAL_OFFSET + 1 + 2*y)
         if token == GameToken.EMPTY:
-            Ansi.set_foreground(0, False) 
             print("  ")  
         if token == GameToken.RED:
             Ansi.set_foreground(1, True)
@@ -41,6 +40,7 @@ class OutputConsole(OutputBase):
         if token == GameToken.YELLOW:
             Ansi.set_foreground(3, True)
             print("██")
+        Ansi.reset()
 
     # if you need more output (e.g., a status line), add a method here
     # YOUR CODE HERE
