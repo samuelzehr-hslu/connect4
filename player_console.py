@@ -34,12 +34,6 @@ class PlayerConsole(PlayerBase):
                 Ansi.gotoXY(1, self._output.STATUS_LINE_OFFSET + 2)
                 return col  # return selected column
 
-            if key == Keys.ESC:
-                Ansi.reset()
-                Ansi.gotoXY(1, self._output.STATUS_LINE_OFFSET + 2)  # move cursor below status line
-                print("Aborted on user request.")     
-                break  # exit loop on ESC  
-
     def draw_board(self, board: list, state: GameState) -> None:
         # YOUR CODE HERE
         # TODO: draw grid with tokens using self._output
