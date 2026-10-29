@@ -1,7 +1,7 @@
 from ansi import Ansi
 from game_token import GameToken
 from output_base import OutputBase
-
+from game_state import GameState
 
 class OutputConsole(OutputBase):
     VERTICAL_OFFSET = 2         # this is the row where the board starts
@@ -41,6 +41,15 @@ class OutputConsole(OutputBase):
             Ansi.set_foreground(3, True)
             print("██")
         Ansi.reset()
+
+    def draw_game_state(self, state: GameState) -> None:
+        Ansi.gotoXY(1, OutputConsole.STATUS_LINE_OFFSET)
+        Ansi.clear_line()
+        if (state == GameState.TURN_RED): print("It's Red's turn to play")
+        elif (state == GameState.TURN_YELLOW): print("It's Yellow's turn to play")
+        elif (state == GameState.WON_RED): print("Red has won the game")
+        elif (state == GameState.WON_YELLOW): print("Yellow has won the game")
+        elif (state == GameState.DRAW): print("The game ends in a draw")
 
     # if you need more output (e.g., a status line), add a method here
     # YOUR CODE HERE
