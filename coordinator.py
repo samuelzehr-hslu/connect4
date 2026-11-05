@@ -6,6 +6,7 @@ from player_base import PlayerBase
 from player_console import PlayerConsole
 from game_logic_base import GameLogicBase
 from game_logic_dummy import GameLogicDummy
+from game_logic_local import GameLogicLocal
 
 class Coordinator:
     """
@@ -48,7 +49,7 @@ class Coordinator:
                 break
 
             if state == GameState.TURN_RED:
-                            current_player = self._player_red
+                current_player = self._player_red
                         
             elif state == GameState.TURN_YELLOW:
                 current_player = self._player_yellow
@@ -72,7 +73,7 @@ if __name__ == '__main__':
     print("Welcome to  Connect 4")
 
     # create the appropriate player and game logic objects
-    game_logic = GameLogicDummy()    # ADD YOUR CODE HERE instead of ...
+    game_logic = GameLogicLocal()    # ADD YOUR CODE HERE instead of ...
     player_red = PlayerConsole(GameToken.RED)    # ADD YOUR CODE HERE instead of ...
     player_yellow = PlayerConsole(GameToken.YELLOW) # ADD YOUR CODE HERE instead of ...
 
