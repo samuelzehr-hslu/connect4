@@ -34,13 +34,16 @@ class GameLogicClient(GameLogicBase):
         # call remote endpoint /state
 
         # YOUR CODE HERE
-        return ...
+        response = requests.get( f"{self._url}/state")
+        return GameState(response.json().get("state"))
 
     def drop_token(self, player, column) -> DropState:
         # call remote endpoint /drop
 
         # YOUR CODE HERE
-        return ...
+        data = {"player_id": player, "column": column}             # 1. build the body (keys from the contract)
+        response = requests.post(f"{self._url}/drop", json=data)    # 2. send it
+        return DropState(response.json().get("drop_state"))         # 3. read it + Enum conversion
 
     def game_reset(self) -> None:
         # call remote endpoint  /reset

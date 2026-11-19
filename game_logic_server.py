@@ -4,6 +4,7 @@ from game_state import GameState
 from drop_state import DropState
 from flask import Flask, request, jsonify
 from flasgger import Swagger
+from game_token import GameToken
 
 """
 This program (it's not a class) implements the REST endpoints for a game logic.
@@ -107,9 +108,11 @@ if __name__ == "__main__":
         # print("server: GET /api/state")
 
         # YOUR CODE HERE
+        state = game.get_state()
+        return jsonify({"state": state.value})
 
         # NOTE: Enum is not 'serializable', that is, it can't be 'jsonified'. but int can!
-        return jsonify({"game_state": "not implemented!"}), 501 # status code: 501: Not implemented
+        #return jsonify({"game_state": "not implemented!"}), 501 # status code: 501: Not implemented
 
 
     @app.route('/api/drop', methods=['POST'])
@@ -178,9 +181,22 @@ if __name__ == "__main__":
         #print("server: POST /api/drop")
  
         # YOUR CODE HERE
+        data = request.get_json(silent=True)
+
+        if not data or "column" not in data or "player_id" not in data:
+            return jsonify({"Error": "Fields 'player_id' and or ' column' missing in request body"}), 400
+
+        try: 
+            player = GameToken(data["player_id"])
+            column = int(data["column"])
+        except ValueError:
+            return jsonify({"Error": "Invalid 'player_id' or 'column'"}), 400
+
+        drop_state = game.drop_token(player, column)
+        return jsonify({"drop_state": drop_state.value})
 
         # NOTE: Enum is not 'serializable', that is, it can't be 'jsonified'. but int can!
-        return jsonify({"drop_state": "not implemented!"}), 501
+        #return jsonify({"drop_state": "not implemented!"}), 501
     
 
     @app.route('/api/reset', methods=['POST'])
@@ -189,7 +205,9 @@ if __name__ == "__main__":
 
         # OPTIONAL
         # YOUR CODE HERE
-
+        global game
+        game = GameLogicLocal()
+        
         return jsonify( {"reset": "OK"} )
 
 
