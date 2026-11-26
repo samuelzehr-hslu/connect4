@@ -5,6 +5,7 @@ from drop_state import DropState
 from player_base import PlayerBase
 from player_console import PlayerConsole
 from game_logic_base import GameLogicBase
+from game_logic_client import GameLogicClient
 from game_logic_dummy import GameLogicDummy
 from game_logic_local import GameLogicLocal
 
@@ -73,7 +74,7 @@ if __name__ == '__main__':
     print("Welcome to  Connect 4")
 
     # create the appropriate player and game logic objects
-    game_logic = GameLogicLocal()    # ADD YOUR CODE HERE instead of ...
+    game_logic = GameLogicClient("127.0.0.1")    # ADD YOUR CODE HERE instead of ...
     player_red = PlayerConsole(GameToken.RED)    # ADD YOUR CODE HERE instead of ...
     player_yellow = PlayerConsole(GameToken.YELLOW) # ADD YOUR CODE HERE instead of ...
 
