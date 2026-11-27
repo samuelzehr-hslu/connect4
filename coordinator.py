@@ -8,6 +8,7 @@ from game_logic_base import GameLogicBase
 from game_logic_client import GameLogicClient
 from game_logic_dummy import GameLogicDummy
 from game_logic_local import GameLogicLocal
+import time
 
 class Coordinator:
     """
@@ -42,8 +43,10 @@ class Coordinator:
             board = self._game_logic.get_board()
 
             # - draw the board for the current player: current_player.draw_board(board, state)
-            self._player_red.draw_board(board, state)
-            self._player_yellow.draw_board(board, state)
+            if self._player_red is not None:
+                self._player_red.draw_board(board, state)
+            if self._player_yellow is not None:
+                self._player_yellow.draw_board(board, state)
                             
             # - if game over: end game
             if (state == GameState.WON_RED) or (state == GameState.WON_YELLOW) or (state == GameState.DRAW):
@@ -54,6 +57,10 @@ class Coordinator:
                         
             elif state == GameState.TURN_YELLOW:
                 current_player = self._player_yellow
+
+            if current_player is None:
+                time.sleep(3)
+                continue
             
             # - ask the current player for their turn: column = current_player.play_turn()
             column = current_player.play_turn()
@@ -74,9 +81,23 @@ if __name__ == '__main__':
     print("Welcome to  Connect 4")
 
     # create the appropriate player and game logic objects
-    game_logic = GameLogicClient("127.0.0.1")    # ADD YOUR CODE HERE instead of ...
-    player_red = PlayerConsole(GameToken.RED)    # ADD YOUR CODE HERE instead of ...
-    player_yellow = PlayerConsole(GameToken.YELLOW) # ADD YOUR CODE HERE instead of ...
+    game_logic = GameLogicClient("eee-w014-089.simple.eee.intern")    # ADD YOUR CODE HERE instead of ...
+
+    choice = input("Farbe? (r = Rot, y = Gelb, l = lokal beide, verteilt): ")
+
+    if choice == "r":
+        player_red = PlayerConsole(GameToken.RED)
+        player_yellow = None
+    elif choice == "y":
+        player_red = None
+        player_yellow = PlayerConsole(GameToken.YELLOW)
+    else:
+        player_red = PlayerConsole(GameToken.RED)
+        player_yellow = PlayerConsole(GameToken.YELLOW)
+
+
+    #player_red = PlayerConsole(GameToken.RED)    # ADD YOUR CODE HERE instead of ...
+    #player_yellow = PlayerConsole(GameToken.YELLOW) # ADD YOUR CODE HERE instead of ...
 
     coordinator = Coordinator(game_logic, player_red, player_yellow)
     coordinator.run() # start game
